@@ -77,9 +77,9 @@ def gauss_meyer_coefficients(sigma, mu, m, k_max):
     T2_f = lambda x: G(order_2_term, order_0_term, x)
     T3_f = lambda x: G(order_2_term, order_1_term_p, x) - G(order_2_term, order_1_term_m, x)
 
-    T1 = factor * (T1_f(-2**(m + 1) / 3) - T1_f(-2**(m + 2) / 3))
-    T2 = (1 / 2**(m / 2)) * (T2_f(2**(m + 1) / 3) - T2_f(-2**(m + 1) / 3))
-    T3 = factor * (T3_f(2**(m + 2) / 3) - T3_f(2**(m + 1) / 3))
+    T1 = factor * (T1_f(-2**(m + 1) * np.pi / 3) - T1_f(-2**(m + 2) * np.pi  / 3))
+    T2 = (1 / 2**(m / 2)) * (T2_f(2**(m + 1) * np.pi  / 3) - T2_f(-2**(m + 1) * np.pi  / 3))
+    T3 = factor * (T3_f(2**(m + 2) * np.pi  / 3) - T3_f(2**(m + 1) * np.pi  / 3))
 
     cmks = (1 / (2 * np.pi)) * (T1 + T2 + T3)
     return cmks
@@ -106,10 +106,10 @@ def project_fourier(cmks, phi_hat_function, m, K, ws):
     
     return fourier_approx
 
-K = 5
+K = 8
 m = 2
-ts = np.linspace(-5, 5, 300)
-ws = np.linspace(-5, 5, 300)
+ts = np.linspace(-3, 3, 300)
+ws = np.linspace(-50, 50, 300)
 
 mu = 0
 sigma = 1

@@ -52,9 +52,9 @@ def gauss_meyer_coefficients(sigma, mu, m, k_max):
     T2_f = lambda x: G(order_2_term, order_1_term, x)
     T3_f = lambda x: G(order_2_term, order_1_term_p, x) - G(order_2_term, order_1_term_m, x)
 
-    T1 = factor * (T1_f(-2**(m + 1) / 3) - T1_f(-2**(m + 2) / 3))
-    T2 = (1 / 2**(m / 2)) * (T2_f(2**(m + 1) / 3) - T2_f(-2**(m + 1) / 3))
-    T3 = factor * (T3_f(2**(m + 2) / 3) - T3_f(2**(m + 1) / 3))
+    T1 = factor * (T1_f(-2**(m + 1) * np.pi / 3) - T1_f(-2**(m + 2) * np.pi / 3))
+    T2 = (1 / 2**(m / 2)) * (T2_f(2**(m + 1) * np.pi / 3) - T2_f(-2**(m + 1) * np.pi / 3))
+    T3 = factor * (T3_f(2**(m + 2) * np.pi / 3) - T3_f(2**(m + 1) * np.pi / 3))
 
     cmks = (1 / (2 * np.pi)) * (T1 + T2 + T3)
     return cmks
@@ -70,11 +70,11 @@ def project(cmks, scalingfunction, m, K, ts):
     return np.real(projection)
 
 ms = [1, 2, 3, 4, 5]
-Ks = 4 * np.power(2, ms)
-ts = np.linspace(-5, 5, 300)
+Ks = 2*np.power(2, ms)
+ts = np.linspace(-10, 10, 300)
 
 mu = 0
-sigma = 1/5
+sigma = 1
 
 repeat = 20
 
@@ -87,7 +87,7 @@ for m, K in zip(ms, Ks):
     stop = time()
 
     analytical = stats.norm.pdf(ts, mu, sigma)
-    err = np.max(np.abs(projection - analytical))
+    err = np.linalg.norm(projection - analytical, 2)
     duration = 1000*(stop-start)/repeat
 
     print(f'm={m}, K={K}, err={"{:.2E}".format(err)}, time={round(duration, 2)} ms')
@@ -101,7 +101,7 @@ for m, K in zip(ms, Ks):
     stop = time()
 
     analytical = stats.norm.pdf(ts, mu, sigma)
-    err = np.max(np.abs(projection - analytical))
+    err = err = np.linalg.norm(projection - analytical, 2)
     duration = 1000*(stop-start)/repeat
 
     print(f'm={m}, K={K}, err={"{:.2E}".format(err)}, time={round(duration, 2)} ms')
